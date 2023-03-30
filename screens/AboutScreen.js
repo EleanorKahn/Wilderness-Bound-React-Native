@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Avatar, Card, ListItem } from 'react-native-elements';
-import { PARTNERS } from '../shared/partners';
 import { Text } from 'react-native-elements';
+import { useSelector } from 'react-redux';
+import { baseUrl } from '../shared/baseUrl';
 
 export const Mission = () => {
     return (
@@ -15,16 +16,16 @@ export const Mission = () => {
 };
 
 const AboutScreen = () => {
-    const [partners, setPartners] = useState(PARTNERS);
+    const partners = useSelector((state) => state.partners)
 
     return (
         <ScrollView>
             <Mission />
             <Card>
-                {partners.map((partner) => {
+                {partners.partnersArray.map((partner) => {
                     return (
                         <ListItem key={partner.id}>
-                            <Avatar rounded source={partner.image} />
+                            <Avatar rounded source={{ uri: baseUrl + partner.image}} />
                             <ListItem.Content>
                                 <ListItem.Title>{partner.name}</ListItem.Title>
                                 <ListItem.Subtitle>{partner.description}</ListItem.Subtitle>
