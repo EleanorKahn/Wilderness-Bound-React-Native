@@ -4,10 +4,12 @@ import RenderCampsite from '../features/campsites/RenderCampsite';
 import { toggleFavorite } from '../features/favorites/favoritesSlice';
 import { useState } from 'react';
 import { Rating, Input } from 'react-native-elements';
+import { postComment } from '../features/comments/commentsSlice';
 
 
 const CampsiteInfoScreen = ({ route }) => {
     const { campsite } = route.params;
+    
     const comments = useSelector((state) => state.comments);
     const favorites = useSelector((state) => state.favorites);
     const dispatch = useDispatch();
@@ -23,7 +25,7 @@ const CampsiteInfoScreen = ({ route }) => {
             text,
             campsiteId: campsite.id
         };
-        console.log(newComment);
+        dispatch(postComment(newComment));
         setShowModal(!showModal);
     };
 
@@ -42,6 +44,7 @@ const CampsiteInfoScreen = ({ route }) => {
                         alignItems: "flex-start",
                         paddingVertical: "5%"
                     }}
+                    imageSize={10}
                     startingValue={item.rating}
                     readonly
                 />
@@ -52,6 +55,7 @@ const CampsiteInfoScreen = ({ route }) => {
         );
     };
 
+    
     return (
         <>
             <FlatList
@@ -75,7 +79,7 @@ const CampsiteInfoScreen = ({ route }) => {
                         <Text style={styles.commentsTitle}>Comments</Text>
                     </>
                 }
-            />
+            />   
             <Modal
                 animationType="slide"
                 transparent={false}
@@ -133,30 +137,30 @@ const CampsiteInfoScreen = ({ route }) => {
                         title="Close"
                     />
                 </View>
-            </Modal>
+            </Modal>  
         </>
     );
 };
 
-const styles = StyleSheet.create({
-    commentsTitle: {
-        textAlign: 'center',
-        backgroundColor: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#43484D',
-        padding: 10,
-        paddingTop: 30
-    },
-    commentItem: {
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        backgroundColor: '#fff'
-    },
-    modal: {
-        justifyContent: "center",
-        margin: 20
-    }
+  const styles = StyleSheet.create({
+      commentsTitle: {
+          textAlign: 'center',
+          backgroundColor: '#fff',
+          fontSize: 16,
+          fontWeight: 'bold',
+          color: '#43484D',
+          padding: 10,
+          paddingTop: 30
+      },
+      commentItem: {
+          paddingVertical: 10,
+          paddingHorizontal: 20,
+          backgroundColor: '#fff'
+      },
+      modal: {
+          justifyContent: "center",
+          margin: 20
+      }
 });
 
 export default CampsiteInfoScreen;
