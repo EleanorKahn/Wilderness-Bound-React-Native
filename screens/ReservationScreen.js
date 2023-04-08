@@ -6,7 +6,6 @@ import {
     StyleSheet,
     Switch,
     Button,
-    Modal,
     Alert
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
