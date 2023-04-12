@@ -12,17 +12,88 @@ const LoginScreen = () => {
         console.log("username:", username);
         console.log("password: ", password);
         console.log("remember: ", remember);
+        if (remember) {
+            SecureStore.setItemAsync(
+                "userinfo",
+                JSON.stringify({
+                    username,
+                    password
+                })
+            ).catch((error) => console.log("Could not save your info", error));
+        } else {
+            SecureStore.deleteItemAsync("userinfo").catch((error) => 
+                console.log("Could not delete user info", error)
+            );
+        }
     };
+
+    useEffect(() => {
+        SecureStore.getItemAsync("userinfo")
+            .then((response) => {
+                const userinfo = JSON.parse(response);
+                if (userinfo) {
+                    setUsername(userinfo.username);
+                    setpassword(userinfo.password);
+                    setRemember(true);
+                }
+            })
+    }, [])
 
     return (
         <View style={styles.container}>
             <Input 
                 placeholder="Username"
                 leftIcon={{ type: "font-awesome", name: "user-o" }}
-                
+                onChangeText={(text) => setUsername(text)}
+                value={username}
+                containerStyle={styles.formInput}
+                leftIconContainerStyle={styles.formIcon}
             />
+            <Input 
+                placeholder="Password"
+                leftIcon={{ type: "font-awesome", name: "key" }}
+                onChangeText={(text) => setpassword(text)}
+                value={password}
+                containerStyle={styles.formInput}
+                leftIconContainerStyle={styles.formIcon}
+            />
+            <CheckBox 
+                title="Remember Me"
+                center
+                checked={remember}
+                onPress={() => setRemember(!remember)}
+                containerStyle={styles.formCheckbox}
+            />
+            <View style={styles.formButton}>
+                <Button 
+                    onPress={() => handleLogin}
+                    title="Login"
+                    color="#5637DD"
+                />
+            </View>
         </View>
     )
 };
+
+const styles = StyleSheet.create({
+    container: {
+        justifyContent: "center",
+        margin: 20
+    },
+    formIcon: {
+        marginRight: 10
+    },
+    formInput: {
+        padding: 10
+    },
+    formCheckbox: {
+        margin: 10,
+        backgroundColor: null
+    },
+    formButton: {
+        margin: 40
+    }
+})
+
 
 export default LoginScreen;
