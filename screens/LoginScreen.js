@@ -7,7 +7,6 @@ import * as ImagePicker from 'expo-image-picker';
 import { baseUrl } from '../shared/baseUrl';
 import logo from '../assets/img/logo.png';
 import * as ImageManipulator from "expo-image-manipulator";
-import { SaveFormat } from 'expo-image-manipulator';
 
 const LoginTab = ({ navigation }) => {
     const [username, setUsername] = useState('');
