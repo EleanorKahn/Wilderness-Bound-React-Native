@@ -5,7 +5,9 @@ import * as SecureStore from 'expo-secure-store';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as ImagePicker from 'expo-image-picker';
 import { baseUrl } from '../shared/baseUrl';
-import logo from '../assets/images/logo.png';
+import logo from '../assets/img/logo.png';
+import * as ImageManipulator from "expo-image-manipulator";
+import { SaveFormat } from 'expo-image-manipulator';
 
 const LoginTab = ({ navigation }) => {
     const [username, setUsername] = useState('');
@@ -140,17 +142,32 @@ const RegisterTab = () => {
     const getImageFromCamera = async () => {
         const cameraPermission =
             await ImagePicker.requestCameraPermissionsAsync();
+            console.log(cameraPermission);
 
         if (cameraPermission.status === 'granted') {
             const capturedImage = await ImagePicker.launchCameraAsync({
                 allowsEditing: true,
                 aspect: [1, 1]
             });
-            if (capturedImage.assets) {
-                console.log(capturedImage.assets[0]);
-                setImageUrl(capturedImage.assets[0].uri);
+            if (!capturedImage.canceled) {
+                console.log(capturedImage);
+                processImage(capturedImage.uri);
             }
         }
+    };
+
+    const processImage = async (imgUri) => {
+        const processedImage = await ImageManipulator.manipulateAsync(
+            imgUri, 
+            [{ 
+                resize: { height: 400 }
+            }],
+            { 
+                format: ImageManipulator.SaveFormat.PNG 
+            }
+        );
+        console.log(processedImage);
+        setImageUrl(processedImage.uri);
     };
 
     return (
