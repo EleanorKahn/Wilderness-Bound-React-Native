@@ -149,9 +149,9 @@ const RegisterTab = () => {
                 allowsEditing: true,
                 aspect: [1, 1]
             });
-            if (!capturedImage.canceled) {
-                console.log(capturedImage);
-                processImage(capturedImage.uri);
+            if (capturedImage.assets) {
+                console.log(capturedImage.assets[0]);
+                processImage(capturedImage.assets[0].uri);
             }
         }
     };
